@@ -1,0 +1,94 @@
+/* sample */
+body {
+  background-color: #38d;
+}
+
+/* reset */
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-decoration: none;
+}
+
+.battle {
+  font: 14px/1 "Lucida Grande", sans-serif;
+  background-color: #fff;
+  text-align: center;
+  border-radius: 4px;
+  box-shadow: 0 3px 10px rgba(0,0,0,.4);
+  width: 300px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -250px 0 0 -150px;
+  padding: 10px;
+}
+
+/* health */
+.health {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.health-bar {
+  display: inline-block;
+  border: 1px solid #ccc;
+  height: 8px;
+  width: 200px;
+  border-radius: 20px;
+  margin-left: 10px;
+  overflow: hidden;
+}
+
+.health-amt {
+  background-color: #ccc;
+  border-radius: inherit;
+  width: 50%;
+  height: 100%;
+}
+
+h4 {
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+  margin-bottom: 20px;
+}
+
+/* profiles */
+.profile {
+  color: #777;
+  margin-bottom: 30px;
+}
+
+.profile img {
+  margin-bottom: 10px;
+}
+
+.act {
+  border-top: 1px solid #eee;
+  padding: 20px 0;
+}
+
+.act h2 {
+  margin-bottom: 20px;
+}
+
+/* attack btns */
+.actions {
+  text-align: center;
+}
+
+.actions li {
+  list-style: none;
+  display: inline;
+}
+
+.actions li a {
+  background-color: #777;
+  border-radius: 3px;
+  color: #fff;
+  display: inline-block;
+  margin: 0 5px;
+  padding: 10px;
+  text-decoration: none;
+}
