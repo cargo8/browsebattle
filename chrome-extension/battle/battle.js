@@ -31,14 +31,18 @@ function toInt(num) {
 function startGame(playerWebsite) {
     console.log("Game started");
     chrome.storage.local.set({'player': playerWebsite}, null);
-    get_rank(playerWebsite, function(rank) {
-        console.log("Player rank = " + rank);
-        chrome.storage.local.set({'player_rank': rank}, null);
-    });
 }
 
 function startBattle(website, callback) {
     console.log("battle started");
+
+    chrome.storage.local.get("player", function(playerWebsite) {
+        get_rank(playerWebsite.player, function(rank) {
+            console.log("Player rank = " + rank);
+            chrome.storage.local.set({'player_rank': rank}, null);
+        });
+    })
+
     chrome.storage.local.set({'foe': website}, null);
     get_rank(website, function(rank) {
         console.log("Foe rank = " + rank);
