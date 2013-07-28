@@ -268,6 +268,10 @@ function damage(defender, attacker, criticalCallback) {
             dmg *= 2.0;
             msg.add_msg("The attack was super effective!", null, true);
             msg.consume();
+        } else if (Math.random() < 0.30) {
+            dmg /= 2.0;
+            msg.add_msg("The attack was not very effective.", null, true);
+            msg.consume();
         }
         if (dmg >= 100) {
             dmg = 95;
