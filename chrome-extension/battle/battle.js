@@ -51,15 +51,22 @@ function getSiteLevel(website) {
 }
 
 function startGame(playerWebsite) {
+    console.log("Game started");
     sessionStorage.setItem('player', playerWebsite);
     setPlayerHealth(100);
-    sessionStorage.setItem('player_rank', getSiteLevel(playerWebsite));
+    get_rank(playerWebsite, function(rank) {
+        console.log("Player rank = " + rank);
+        sessionStorage.setItem('player_rank', rank);
+    });
 }
 
 function startBattle(website, callback) {
     console.log("battle started");
     sessionStorage.setItem('foe', website);
-    sessionStorage.setItem('foe_rank', getSiteLevel(website));
+    get_rank(website, function(rank) {
+        console.log("Foe rank = " + rank);
+        sessionStorage.setItem('foe_rank', rank);
+    });
     setFoeHealth(100);
     setPlayerHealth(100);
     window.storage.callback = callback;
