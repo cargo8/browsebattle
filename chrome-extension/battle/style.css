@@ -2,11 +2,6 @@
   clear: both;
 }
 
-/* sample */
-body {
-  background-color: #38d;
-}
-
 #battle_canvas {
   position: fixed;
   /*border: 1px solid;*/
