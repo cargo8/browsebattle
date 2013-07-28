@@ -139,6 +139,7 @@ function catchPokemon(callback) {
             if (Math.random() < 0.95) {
                 // take the new pokemon
                 console.log("pokemon was caught!");
+                callback(true);
                 chrome.storage.local.get('foe', function(foe) {
                     chrome.storage.local.set({'player': foe.foe}, null);
                     chrome.storage.local.set({'player_health': 100}, null);
@@ -147,7 +148,6 @@ function catchPokemon(callback) {
                     });
                 });
                 window.storage.callback();
-                callback(true);
                 return;
             }
         }
