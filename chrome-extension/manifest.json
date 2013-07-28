@@ -13,7 +13,8 @@
     ],
     "permissions": [
         "https://secure.flickr.com/",
-        "storage"
+        "storage",
+        "tabs"
     ],
     "browser_action": {
         "default_icon": "icon.png",

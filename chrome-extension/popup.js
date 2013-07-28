@@ -1,12 +1,13 @@
 $(document).ready(function(){
     chrome.storage.local.get('player', function(data) {
         if (!data.player) {
-            $("#btn").text("Start Battle");
-            $("#btn").click(function(){
-                chrome.storage.local.set({'player': $("#url").val()}, function(data){
+            chrome.tabs.query({active:true},function(tab){
+                $("#url").val(tab[0].url);
+                $("#btn").text("Start Battle");
+                $("#btn").click(function(){
+                    startGame($("#url").val());
                     chrome.tabs.update({ active: true });
                 });
-
             });
         } else {
             $("#url").val(data.player);
