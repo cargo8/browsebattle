@@ -15,7 +15,7 @@ function load_html() {
     $("#battle").load(battleHTML, function(){
         $("#battle").height($(window).height());
         $("#battle").width($(window).width());
-        //$("#can").width(0);
+        $("#can").width(0);
         $("#enemy").attr("src", chrome.extension.getURL("battle/images/facebook.png"));
         $("#you").attr("src", chrome.extension.getURL("battle/images/github.png"));
         //$("#battle").css("z-index", 9999);

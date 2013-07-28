@@ -1,4 +1,4 @@
-window.storage = {};
+var closeCallback;
 
 function getFoeHealth(callback) {
     var health = 100;
@@ -54,7 +54,7 @@ function startBattle(website, callback) {
     });
     setPlayerHealth(100);
     setFoeHealth(100);
-    window.storage.callback = callback;
+    closeCallback = callback;
 
     $("#attack").click(function() {
         console.log("#attack.click");
@@ -99,7 +99,7 @@ function defend() {
                chrome.storage.local.get('player_health', function(new_health) {
                    if (new_health.player_health <= 0) {
                         window.alert("Oh no, you lost the battle!");
-                        window.storage.callback();
+                        closeCallback();
                    }
                });
             });
@@ -121,7 +121,7 @@ function attack() {
                chrome.storage.local.get('foe_health', function(new_health) {
                 if (new_health.foe_health <= 0) {
                     window.alert("You won the battle!");
-                    window.storage.callback();
+                    closeCallback();
                }
                });
             });
@@ -146,7 +146,7 @@ function damage(player, foe) {
 function escape() {
     if (Math.random() < 0.95) {
         window.alert("You escaped safely!");
-        window.storage.callback();
+        closeCallback();
     } else {
         window.alert("Can't escape!");
     }
@@ -166,7 +166,7 @@ function catchPokemon(callback) {
                         chrome.storage.local.set({'player_rank': rank}, null);
                     });
                 });
-                window.storage.callback();
+                closeCallback();
                 return;
             }
         }
