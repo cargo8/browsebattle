@@ -4,6 +4,10 @@ function get_rank(url, cb) {
     pipe += "&site=" + encodeURIComponent(url);
     pipe += "&_render=json&callback=?";
     $.ajax(pipe,{crossDomain:true}).done(function(data){
-        cb(data.value.items[0].SD.REACH.RANK);
+        try {
+            cb(data.value.items[0].SD.REACH.RANK);
+        } catch(e) {
+            cb(1000);
+        }
     });
 }
