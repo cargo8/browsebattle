@@ -12,7 +12,7 @@ function setFoeHealth(health) {
     if (health < 0) health = 0;
     console.log("Setting enemy health = " + health);
     chrome.storage.local.set({'foe_health': health}, null);
-    normalized = health / 100 * 170;
+    var normalized = health / 100 * 170;
     document.getElementById("enemy_health").style["width"] = normalized+"px";
 }
 
@@ -20,7 +20,7 @@ function setPlayerHealth(health) {
     if (health < 0) health = 0;
     console.log("Setting player health = " + health);
     chrome.storage.local.set({'player_health': health}, null);
-    normalized = health / 100 * 170;
+    var normalized = health / 100 * 170;
     document.getElementById("player_health").style["width"] = normalized+"px";
 }
 
@@ -83,11 +83,7 @@ function defend() {
         chrome.storage.local.get('player_rank', function(data2) {
             foe_rank = data.foe_rank;
             player_rank = data2.player_rank;
-            if (toInt(foe_rank) > toInt(player_rank)) {
-                health_loss = 15; // FIXME - make this more proportional
-            } else {
-                health_loss = 45; // FIXME - make this more proportional
-            }
+            health_loss = damage(player_rank, foe_rank);
             chrome.storage.local.get('player_health', function(health_data) {
                newHealth = toInt(health_data.player_health) - health_loss;
                setPlayerHealth(newHealth);
@@ -106,11 +102,7 @@ function attack() {
         chrome.storage.local.get('player_rank', function(data2) {
             foe_rank = data.foe_rank;
             player_rank = data2.player_rank;
-            if (toInt(foe_rank) < toInt(player_rank)) {
-                health_loss = 15; // FIXME - make this more proportional and edit the HTML to reflect changes
-            } else {
-                health_loss = 45; // FIXME - make this more proportional
-            }
+            health_loss = damage(foe_rank, player_rank);
             chrome.storage.local.get('foe_health', function(health_data) {
                newHealth = toInt(health_data.foe_health) - health_loss;
                setFoeHealth(newHealth);
@@ -121,6 +113,20 @@ function attack() {
             });
         });
     });
+}
+
+// amount of loss that @player should incur
+function damage(player, foe) {
+    var player_rank = toInt(player);
+    var foe_rank = toInt(foe);
+    var diff = player_rank - foe_rank;
+    if (diff < 0) {
+        // @player is much more powerful than foe
+        return -75 / diff;
+    } else {
+        // @foe is more powerful than @player
+        return diff / 75;
+    }
 }
 
 function escape() {
