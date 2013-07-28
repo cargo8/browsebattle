@@ -118,6 +118,7 @@ function attack() {
 
 function escape() {
     if (Math.random() < 0.95) {
+        window.alert("You escaped safely!");
         window.storage.callback();
     } else {
         window.alert("Can't escape!");
