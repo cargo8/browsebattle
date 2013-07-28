@@ -233,7 +233,7 @@ function damage(defender, attacker, criticalCallback) {
             diff /= 1.25;
         }
         dmg = 450/diff;
-        if (Math.random() < 0.10) {
+        if (Math.random() < 0.20) {
             dmg *= 1.5;
             msg.add_msg("Attack inflicted critical damage!", null, false);
             msg.consume();
@@ -256,7 +256,7 @@ function damage(defender, attacker, criticalCallback) {
             diff *= 3;
         }
         dmg = diff / 4;
-       if (Math.random() < 0.10) {
+       if (Math.random() < 0.20) {
             dmg *= 1.5;
             msg.add_msg("Attack inflicted critical damage!", null, true);
             msg.consume();
