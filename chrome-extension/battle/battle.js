@@ -33,6 +33,14 @@ function startGame(playerWebsite) {
     chrome.storage.local.set({'player': playerWebsite}, null);
 }
 
+function urlClean(url) {
+    url = url.replace("http://", "");
+    url = url.replace("https://", "");
+    url = url.replace("www.", "");
+    url = url.replace("/", "");
+    return url;
+}
+
 function startBattle(website, callback) {
     console.log("battle started");
 
@@ -40,23 +48,20 @@ function startBattle(website, callback) {
         get_rank(playerWebsite.player, function(rank) {
             console.log("Player rank = " + rank);
             $("#player_rank").html(rank);
-            var name = playerWebsite.player;
-            name = name.replace("http://", "");
-            name = name.replace("https://", "");
-            name = name.replace("www.", "");
+            var name = urlClean(playerWebsite.player);
             $("#player_name").html(name);
             $("#player_name2").html(name);
-            $("#you").attr("src", playerWebsite.player+"/favicon.ico");
+            $("#you").attr("src", "http://"+name+"/favicon.ico");
             chrome.storage.local.set({'player_rank': rank}, null);
         });
     });
 
     chrome.storage.local.set({'foe': website}, null);
     get_rank(website, function(rank) {
-        console.log("Foe rank = " + rank);
         $("#enemy_rank").html(rank);
         $("#enemy_name").html(window.location.host);
-        $("#enemy").attr("src", website+"/favicon.ico");
+        var name = urlClean(website);
+        $("#enemy").attr("src", "http://"+name+"/favicon.ico");
         chrome.storage.local.set({'foe_rank':rank}, null);
     });
     setPlayerHealth(100);
