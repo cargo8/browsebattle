@@ -41,7 +41,7 @@ function startBattle(website, callback) {
             console.log("Player rank = " + rank);
             chrome.storage.local.set({'player_rank': rank}, null);
         });
-    })
+    });
 
     chrome.storage.local.set({'foe': website}, null);
     get_rank(website, function(rank) {
@@ -91,10 +91,12 @@ function defend() {
             chrome.storage.local.get('player_health', function(health_data) {
                newHealth = toInt(health_data.player_health) - health_loss;
                setPlayerHealth(newHealth);
-               if (health_data.player_health <= 0) {
-                    window.alert("oh no, you lost the battle!");
-                    window.storage.callback();
-               }
+               chrome.storage.local.get('player_health', function(new_health) {
+                   if (new_health.player_health <= 0) {
+                        window.alert("Oh no, you lost the battle!");
+                        window.storage.callback();
+                   }
+               });
             });
         });
     });
@@ -110,10 +112,12 @@ function attack() {
             chrome.storage.local.get('foe_health', function(health_data) {
                newHealth = toInt(health_data.foe_health) - health_loss;
                setFoeHealth(newHealth);
-               if (health_data.foe_health <= 0) {
+               chrome.storage.local.get('foe_health', function(new_health) {
+                if (new_health.foe_health <= 0) {
                     window.alert("You won the battle!");
                     window.storage.callback();
                }
+               });
             });
         });
     });
@@ -126,10 +130,10 @@ function damage(player, foe) {
     var diff = player_rank - foe_rank;
     if (diff < 0) {
         // @player is much more powerful than foe
-        return -75 / diff;
+        return -2.5 / diff;
     } else {
         // @foe is more powerful than @player
-        return diff / 75;
+        return diff / 0.25;
     }
 }
 
