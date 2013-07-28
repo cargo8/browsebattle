@@ -229,6 +229,8 @@ function damage(defender, attacker, criticalCallback) {
             diff *= 3;
         } else if (diff < 50) {
             diff *= 2;
+        } else if (diff < 80) {
+            diff /= 1.25;
         }
         dmg = 450/diff;
         if (Math.random() < 0.10) {
