@@ -114,6 +114,7 @@ h4 {
 .act {
   line-height: 14px;
   padding: 30px 0;
+  cursor: pointer;
 }
 
 .act h2 {
