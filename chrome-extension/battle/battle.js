@@ -48,28 +48,37 @@ function urlClean(url) {
     return url;
 }
 
+function rankToLevel(rank) {
+    if (rank > 100) {
+        rank = 1;
+    } else {
+        rank = 100 - rank;
+    }
+    return rank;
+}
+
 function startBattle(website, callback) {
     console.log("battle started");
 
     chrome.storage.local.get("player", function(playerWebsite) {
         get_rank(playerWebsite.player, function(rank) {
-            console.log("Player rank = " + rank);
-            $("#player_rank").html(rank);
+            console.log("Player rank = " + rankToLevel(rank));
+            $("#player_rank").html(rankToLevel(rank));
             var name = urlClean(playerWebsite.player);
             $("#player_name").html(name);
             $("#player_name2").html(name);
             $("#you").attr("src", "http://"+name+"/favicon.ico");
-            chrome.storage.local.set({'player_rank': rank}, null);
+            chrome.storage.local.set({'player_rank': rankToLevel(rank)}, null);
         });
     });
 
     chrome.storage.local.set({'foe': website}, null);
     get_rank(website, function(rank) {
-        $("#enemy_rank").html(rank);
+        $("#enemy_rank").html(rankToLevel(rank));
         $("#enemy_name").html(window.location.host);
         var name = urlClean(website);
         $("#enemy").attr("src", "http://"+name+"/favicon.ico");
-        chrome.storage.local.set({'foe_rank':rank}, null);
+        chrome.storage.local.set({'foe_rank':rankToLevel(rank)}, null);
     });
     setPlayerHealth(100);
     setFoeHealth(100);
@@ -158,18 +167,25 @@ function attack() {
     });
 }
 
-// amount of loss that @player should incur
-function damage(player, foe) {
-    var player_rank = toInt(player);
-    var foe_rank = toInt(foe);
-    var diff = player_rank - foe_rank;
+// amount of loss that @defender should incur
+function damage(defender, attacker, criticalCallback) {
+    var defender_rank = toInt(defender);
+    var attacker_rank = toInt(attacker);
+    var diff = defender_rank - attacker_rank;
+    var dmg = 20;
     if (diff === 0) {
-        return 20;
-    } else if (diff < 0) {
-        // @player is much more powerful than foe
-        var dmg = -2.5 / diff;
+        console.log("Same level pokemon");
+        return dmg;
+    } else if (diff > 0) {
+        // @defender is more powerful than foe
+        if (diff < 20) {
+            diff *= 3;
+        } else if (diff < 50) {
+            diff *= 2;
+        }
+        dmg = 400/diff;
         if (Math.random() < 0.10) {
-            dmg *= 2;
+            dmg *= 1.5;
             window.alert("Attack inflicted critical damage!");
         }
         if (dmg >= 100) {
@@ -177,10 +193,16 @@ function damage(player, foe) {
         }
         return dmg;
     } else {
-        // @foe is more powerful than @player
-        var dmg = diff / 0.25;
+        // @attacker is more powerful than @defender
+        diff = -diff;
+        if (diff < 20) {
+            diff *= 10;
+        } else if (diff < 50) {
+            diff *= 3;
+        }
+        dmg = diff / 5;
         if (Math.random() < 0.10) {
-            dmg *= 2;
+            dmg *= 1.5;
             window.alert("Attack inflicted critical damage!");
         }
         if (dmg >= 100) {
@@ -206,8 +228,10 @@ function escape() {
 
 function catchPokemon(callback) {
     getFoeHealth(function(health) {
-        if (health < 50) {
-            if (Math.random() < 0.95) {
+        if ((health < 30 && Math.random() < 0.95) ||
+            (health < 50 && Math.random() < 0.60) ||
+            (health < 75 && Math.random() < 0.35) ||
+            (health < 95 && Math.random() < 0.15)) {
                 // take the new pokemon
                 console.log("pokemon was caught!");
                 callback(true);
@@ -215,14 +239,12 @@ function catchPokemon(callback) {
                     chrome.storage.local.set({'player': foe.foe}, null);
                     chrome.storage.local.set({'player_health': 100}, null);
                     get_rank(foe.foe, function(rank) {
-                        chrome.storage.local.set({'player_rank': rank}, null);
+                        chrome.storage.local.set({'player_rank': rankToLevel(rank)}, null);
                     });
                 });
                 closeCallback();
                 return;
             }
-        }
-        console.log("pokemon got aways!");
         callback(false);
         return;
     });
