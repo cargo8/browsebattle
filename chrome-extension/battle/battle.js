@@ -83,7 +83,9 @@ function startBattle(website, callback) {
 
     $("#run").click(function() {
         console.log("#run.click");
-        escape();
+        if (!escape()) {
+            defend();
+        }
     });
 
     $("#catchPokemon").click(function() {
@@ -192,9 +194,11 @@ function escape() {
             gameOver = true;
             window.alert("You escaped safely!");
             closeCallback();
+            return true;
         }
     } else {
         window.alert("Can't escape!");
+        return false;
     }
 }
 
@@ -221,7 +225,3 @@ function catchPokemon(callback) {
         return;
     });
 }
-
-function lose() {}
-
-function win() {}
