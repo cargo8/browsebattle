@@ -21,6 +21,7 @@ function load_html() {
         //$("#battle").css("z-index", 9999);
         //TODO: Yunxing add the callback
         startBattle(window.location.origin, function(){
+            document.getElementById("battle-sound").pause();
             $("#battle").hide();
         });
     });
@@ -189,6 +190,9 @@ $(document).ready(function() {
         if (data.player) {
             var width = window.innerWidth + 50;
             var height = window.innerHeight + 50;
+            var audio_string = '<audio id="battle-sound" src="' + chrome.extension.getURL("battle/107-battle-vs-wild-pokemon-.mp3" + '" preload="auto"></audio>');
+            $("body").append(audio_string);
+            document.getElementById("battle-sound").play();
             $("body").prepend('<canvas width= "' + window.innerWidth + '" height="' + window.innerHeight + '" id="can"></canvas>');
             var canvas = document.getElementById('can'),
             context = canvas.getContext('2d');

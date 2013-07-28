@@ -21,6 +21,7 @@
         "default_popup": "popup.html"
     },
     "web_accessible_resources": [
+        "battle/107-battle-vs-wild-pokemon-.mp3",
         "battle/images/facebook.png",
         "battle/images/github.png",
         "battle/index.html",
