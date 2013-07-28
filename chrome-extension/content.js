@@ -29,6 +29,7 @@ function load_html() {
 }
 
 function clear_fire_ball () {
+    isFiring = false;
     clearInterval(draw_fire_ball_interval);
     setTimeout(function(){
         ctx.clearRect(0,0,W,H);
@@ -106,13 +107,16 @@ function draw(dx,dy)
 var particles;
 var W=600; var H=200;
 var draw_fire_ball_interval;
-
+var isFiring = false;
 // draw a fire ball from (sx,sy) to (dx,dy) in duration
 function draw_fire_ball(sx,sy,dx,dy) {
-    console.log("Drawing A Fire Ball");
-    ctx = $('#battle_canvas')[0].getContext('2d');
-    particles = new create_particle(sx,sy,dx,dy);
-    draw_fire_ball_interval = setInterval( function() { draw(dx,dy); }, 33);
+    if(!isFiring) {
+        isFiring = true;
+        console.log("Drawing A Fire Ball");
+        ctx = $('#battle_canvas')[0].getContext('2d');
+        particles = new create_particle(sx,sy,dx,dy);
+        draw_fire_ball_interval = setInterval( function() { draw(dx,dy); }, 33);
+    }
 }
 
 
