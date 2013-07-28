@@ -87,6 +87,7 @@ function startBattle(website, callback) {
 }
 
 function defend() {
+    draw_fire_ball(475,30,80,150);
     var health_loss = 0;
     if (toInt(sessionStorage.getItem('foe_rank')) > toInt(sessionStorage.getItem('player_rank'))) {
         health_loss = 15; // FIXME - make this more proportional
@@ -102,6 +103,7 @@ function defend() {
 }
 
 function attack() {
+    draw_fire_ball(80,150,475,30);
     var health_loss = 0;
     if (toInt(sessionStorage.getItem('foe_rank')) < toInt(sessionStorage.getItem('player_rank'))) {
         health_loss = 15; // FIXME - make this more proportional and edit the HTML to reflect changes
