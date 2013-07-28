@@ -31,7 +31,6 @@ function toInt(num) {
 function startGame(playerWebsite) {
     console.log("Game started");
     chrome.storage.local.set({'player': playerWebsite}, null);
-    setPlayerHealth(100);
     get_rank(playerWebsite, function(rank) {
         console.log("Player rank = " + rank);
         chrome.storage.local.set({'player_rank': rank}, null);
@@ -45,8 +44,8 @@ function startBattle(website, callback) {
         console.log("Foe rank = " + rank);
         chrome.storage.local.set({'foe_rank':rank}, null);
     });
-    setFoeHealth(100);
     setPlayerHealth(100);
+    setFoeHealth(100);
     window.storage.callback = callback;
 
     $("#attack").click(function() {
