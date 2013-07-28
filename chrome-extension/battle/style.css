@@ -62,7 +62,7 @@ h2 {
 }
 
 /* health */
-.hp {
+.health_bar {
   float: right;
   display: inline-block;
   border: 2px solid #ccc;
@@ -87,7 +87,7 @@ h6 {
 .inner-bar {
   background-color: #ccc;
   border-radius: inherit;
-  width: 127px;
+  width: 170px;
   height: 10px;
 }
 
