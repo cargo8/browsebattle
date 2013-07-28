@@ -1,3 +1,7 @@
+.clear {
+  clear: both;
+}
+
 /* sample */
 body {
   background-color: #38d;
@@ -11,45 +15,83 @@ body {
   text-decoration: none;
 }
 
+h2 {
+  font-size: 14px;
+}
+
 .battle {
-  font: 14px/1 "Lucida Grande", sans-serif;
+  font: 14px/1 monospace;
   background-color: #fff;
-  text-align: center;
-  border-radius: 4px;
-  box-shadow: 0 3px 10px rgba(0,0,0,.4);
-  width: 300px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: -250px 0 0 -150px;
+  width: 600px;
+  padding: 30px 30px 10px;
+  margin: 200px auto;
+}
+
+.enemy {
+  margin-bottom: 30px;
+}
+
+.you {
+  margin-bottom: 20px;
+}
+
+.enemy .image, .you .info-box {
+  float: right;
+}
+
+.enemy .info-box, .you .image {
+  float: left;
+}
+
+.info-box {
+  border-radius: 10px 3px 10px 3px;
+  border: 3px solid #ccc;
+  width: 280px;
   padding: 10px;
 }
 
-/* health */
-.health {
-  font-weight: bold;
-  margin-bottom: 10px;
+.info-box h2 {
+  float: left;
+  font-weight: normal;
+  text-transform: uppercase;
 }
 
-.health-bar {
+.level {
+  float: right;
+  font-size: 14px;
+}
+
+/* health */
+.hp {
+  float: right;
   display: inline-block;
-  border: 1px solid #ccc;
-  height: 8px;
+  border: 2px solid #ccc;
+  margin-top: 10px;
   width: 200px;
+  line-height: 10px;
   border-radius: 20px;
-  margin-left: 10px;
   overflow: hidden;
 }
 
-.health-amt {
+.inner-bar, h6 {
+  float: left;
+} 
+
+h6 {
+  font-size: 12px;
+  font-weight: bold;
+  width: 30px;
+  text-align: center;
+}
+
+.inner-bar {
   background-color: #ccc;
   border-radius: inherit;
-  width: 50%;
-  height: 100%;
+  width: 127px;
+  height: 10px;
 }
 
 h4 {
-  border-top: 1px solid #eee;
   padding-top: 20px;
   margin-bottom: 20px;
 }
@@ -65,17 +107,19 @@ h4 {
 }
 
 .act {
-  border-top: 1px solid #eee;
+  line-height: 14px;
   padding: 20px 0;
 }
 
 .act h2 {
-  margin-bottom: 20px;
+  font-size: 20px;
+  line-height: 14px;
+  float: left;
 }
 
 /* attack btns */
 .actions {
-  text-align: center;
+  float: right;
 }
 
 .actions li {
