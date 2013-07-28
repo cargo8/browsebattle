@@ -7,8 +7,8 @@
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
-            "css": ["content.css", "battle/style.css"],
-            "js": ["core.js", "battle/battle.js", "jquery.js", "player.js", "content.js"]
+            "css": ["content.css", "battle/style.css", "battle/animate.min.css"],
+            "js": ["core.js", "battle/battle.js", "jquery.js", "battle/msg.js" ,"player.js", "content.js"]
         }
     ],
     "permissions": [

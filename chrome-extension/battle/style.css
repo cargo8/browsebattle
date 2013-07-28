@@ -32,10 +32,12 @@ h2 {
 
 .enemy {
   margin-bottom: 30px;
+  /* -webkit-animation-iteration-count: infinite; */
 }
 
 .you {
   margin-bottom: 20px;
+  /* -webkit-animation-iteration-count: infinite; */
 }
 
 .enemy .image, .you .info-box {
@@ -78,7 +80,7 @@ h2 {
 
 .inner-bar, h6 {
   float: left;
-} 
+}
 
 h6 {
   font-size: 12px;

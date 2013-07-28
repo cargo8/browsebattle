@@ -1,6 +1,6 @@
 var closeCallback;
 var gameOver = false;
-
+var msg;
 function getFoeHealth(callback) {
     var health = 100;
     chrome.storage.local.get('foe_health', function(data) {
@@ -57,9 +57,25 @@ function rankToLevel(rank) {
     return rank;
 }
 
-function startBattle(website, callback) {
-    console.log("battle started");
+function hideButtons() {
+    $("#attack").hide();
+    $("#run").hide();
+    $("#catchPokemon").hide();
+}
 
+function showButtons() {
+    $("#attack").show();
+    $("#run").show();
+    $("#catchPokemon").show();
+}
+
+function startBattle(website, callback) {
+    msg = new MSG();
+    msg.create($("#msgbox"));
+    $('#msgbox').click(function(){
+        msg.consume();
+    });
+    hideButtons();
     chrome.storage.local.get("player", function(playerWebsite) {
         get_rank(playerWebsite.player, function(rank) {
             console.log("Player rank = " + rankToLevel(rank));
@@ -67,6 +83,10 @@ function startBattle(website, callback) {
             var name = urlClean(playerWebsite.player);
             $("#player_name").html(name);
             $("#player_name2").html(name);
+            msg.add_msg("A wild " + urlClean(website) + " appears!");
+            msg.add_msg("What is " + name + " going to do?", function(){
+                showButtons();
+            });
             $("#you").attr("src", "http://"+name+"/favicon.ico");
             chrome.storage.local.set({'player_rank': rankToLevel(rank)}, null);
         });
@@ -117,6 +137,10 @@ function startBattle(website, callback) {
 
 function defend() {
     draw_fire_ball(475,30,80,150);
+    $("#enemy").addClass('bounceInUp');
+    setTimeout(function(){
+        $("#enemy").removeClass('bounceInUp');
+    }, 1000);
     var health_loss = 0;
     chrome.storage.local.get('foe_rank', function(data) {
         chrome.storage.local.get('player_rank', function(data2) {
@@ -142,6 +166,13 @@ function defend() {
 
 function attack() {
     draw_fire_ball(80,150,475,30);
+    msg.add_msg("");
+    msg.consume();
+    hideButtons();
+    $("#you").addClass('bounceInUp');
+    setTimeout(function(){
+        $("#you").removeClass('bounceInUp');
+    }, 1000);
     var health_loss = 0;
     chrome.storage.local.get('foe_rank', function(data) {
         chrome.storage.local.get('player_rank', function(data2) {
@@ -150,6 +181,7 @@ function attack() {
             health_loss = damage(foe_rank, player_rank);
             chrome.storage.local.get('foe_health', function(health_data) {
                newHealth = toInt(health_data.foe_health) - health_loss;
+
                setFoeHealth(newHealth);
                chrome.storage.local.get('foe_health', function(new_health) {
                 if (new_health.foe_health <= 0) {
