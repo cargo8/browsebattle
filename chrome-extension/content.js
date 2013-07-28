@@ -20,9 +20,9 @@ function load_html() {
         $("#you").attr("src", chrome.extension.getURL("battle/images/github.png"));
         //$("#battle").css("z-index", 9999);
         //TODO: Yunxing add the callback
-        startBattle(window.location.origin, null);
-        //draw_fire_ball(80,150,475,30);
-
+        startBattle(window.location.origin, function(){
+            $("#battle").hide();
+        });
     });
 }
 
@@ -185,19 +185,15 @@ function enable_scrolling() {
 }
 
 $(document).ready(function() {
-    var width = window.innerWidth + 50;
-    var height = window.innerHeight + 50;
-    $("body").prepend('<canvas width= "' + window.innerWidth + '" height="' + window.innerHeight + '" id="can"></canvas>');
-    var canvas = document.getElementById('can'),
-    context = canvas.getContext('2d');
-
-    // var img = document.createElement('img');
-    // img.onload = function () {
-    //         context.drawImage(this,0,0);
-    // };
-    // img.src = 'http://www.planet-aye.co.uk/seasonal05/snow.png';
-
-    disable_scrolling();
-    fill_color(context, width, height);
-})
-
+    chrome.storage.local.get('player', function(data) {
+        if (data.player) {
+            var width = window.innerWidth + 50;
+            var height = window.innerHeight + 50;
+            $("body").prepend('<canvas width= "' + window.innerWidth + '" height="' + window.innerHeight + '" id="can"></canvas>');
+            var canvas = document.getElementById('can'),
+            context = canvas.getContext('2d');
+            disable_scrolling();
+            fill_color(context, width, height);
+        }
+    });
+});
