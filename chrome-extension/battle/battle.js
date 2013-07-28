@@ -1,4 +1,5 @@
 var closeCallback;
+var gameOver = false;
 
 function getFoeHealth(callback) {
     var health = 100;
@@ -110,8 +111,11 @@ function defend() {
                setPlayerHealth(newHealth);
                chrome.storage.local.get('player_health', function(new_health) {
                    if (new_health.player_health <= 0) {
-                        window.alert("Oh no, you lost the battle!");
-                        closeCallback();
+                        if (!gameOver) {
+                            gameOver = true;
+                            window.alert("Oh no, you lost the battle!");
+                            closeCallback();
+                        }
                    }
                });
             });
@@ -133,8 +137,11 @@ function attack() {
                chrome.storage.local.get('foe_health', function(new_health) {
                 if (new_health.foe_health <= 0) {
                     window.setTimeout(function() {
-                        window.alert("You won the battle!");
-                        closeCallback();
+                        if (!gameOver) {
+                            gameOver = true;
+                            window.alert("You won the battle!");
+                            closeCallback();
+                        }
                     }, 1000);
                }
                });
@@ -148,19 +155,38 @@ function damage(player, foe) {
     var player_rank = toInt(player);
     var foe_rank = toInt(foe);
     var diff = player_rank - foe_rank;
-    if (diff < 0) {
+    if (diff === 0) {
+        return 20;
+    } else if (diff < 0) {
         // @player is much more powerful than foe
-        return -2.5 / diff;
+        var dmg = -2.5 / diff;
+        if (Math.random() < 0.10) {
+            dmg *= 2;
+        }
+        if (dmg >= 100) {
+            dmg = 95;
+        }
+        return dmg;
     } else {
         // @foe is more powerful than @player
-        return diff / 0.25;
+        var dmg = diff / 0.25;
+        if (Math.random() < 0.10) {
+            dmg *= 2;
+        }
+        if (dmg >= 100) {
+            dmg = 95;
+        }
+        return dmg;
     }
 }
 
 function escape() {
     if (Math.random() < 0.95) {
-        window.alert("You escaped safely!");
-        closeCallback();
+        if (!gameOver) {
+            gameOver = true;
+            window.alert("You escaped safely!");
+            closeCallback();
+        }
     } else {
         window.alert("Can't escape!");
     }
