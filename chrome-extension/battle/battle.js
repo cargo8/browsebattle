@@ -1,19 +1,21 @@
 window.storage = {};
 
 function getFoeHealth() {
-    return parseInt(localStorage.getItem("foe_health"), 10);
+    return parseInt(sessionStorage.getItem("foe_health"), 10);
 }
 
 function setFoeHealth(health) {
+    if (health < 0) health = 0;
     console.log("Setting enemy health = " + health);
-    localStorage.setItem("foe_health", health);
+    sessionStorage.setItem("foe_health", health);
     normalized = health / 100 * 170;
     document.getElementById("enemy_health").style["width"] = normalized+"px";
 }
 
 function setPlayerHealth(health) {
+    if (health < 0) health = 0;
     console.log("Setting player health = " + health);
-    localStorage.setItem("player_health", health);
+    sessionStorage.setItem("player_health", health);
     normalized = health / 100 * 170;
     document.getElementById("player_health").style["width"] = normalized+"px";
 }
@@ -49,15 +51,15 @@ function getSiteLevel(website) {
 }
 
 function startGame(playerWebsite) {
-    localStorage.setItem('player', playerWebsite);
+    sessionStorage.setItem('player', playerWebsite);
     setPlayerHealth(100);
-    localStorage.setItem('player_rank', getSiteLevel(playerWebsite));
+    sessionStorage.setItem('player_rank', getSiteLevel(playerWebsite));
 }
 
 function startBattle(website, callback) {
     console.log("battle started");
-    localStorage.setItem('foe', website);
-    localStorage.setItem('foe_rank', getSiteLevel(website));
+    sessionStorage.setItem('foe', website);
+    sessionStorage.setItem('foe_rank', getSiteLevel(website));
     setFoeHealth(100);
     setPlayerHealth(100);
     window.storage.callback = callback;
@@ -81,19 +83,19 @@ function startBattle(website, callback) {
     });
 
     console.log("Enemy: " + website);
-    console.log("Player: " + localStorage.getItem("player"));
+    console.log("Player: " + sessionStorage.getItem("player"));
 }
 
 function defend() {
     var health_loss = 0;
-    if (toInt(localStorage.getItem('foe_rank')) > toInt(localStorage.getItem('player_rank'))) {
+    if (toInt(sessionStorage.getItem('foe_rank')) > toInt(sessionStorage.getItem('player_rank'))) {
         health_loss = 15; // FIXME - make this more proportional
     } else {
         health_loss = 45; // FIXME - make this more proportional
     }
-    newHealth = localStorage.getItem('player_health') - health_loss;
+    newHealth = toInt(sessionStorage.getItem('player_health')) - health_loss;
     setPlayerHealth(newHealth);
-    if (toInt(localStorage.getItem("player_health")) <= 0) {
+    if (toInt(sessionStorage.getItem("player_health")) <= 0) {
         window.alert("Oh no, you lost the battle!");
         window.storage.callback();
     }
@@ -101,14 +103,14 @@ function defend() {
 
 function attack() {
     var health_loss = 0;
-    if (localStorage.getItem('foe_rank') < localStorage.getItem('player_rank') ) {
+    if (toInt(sessionStorage.getItem('foe_rank')) < toInt(sessionStorage.getItem('player_rank'))) {
         health_loss = 15; // FIXME - make this more proportional and edit the HTML to reflect changes
     } else {
         health_loss = 45; // FIXME - make this more proportional
     }
-    newHealth = localStorage.getItem('foe_health') - health_loss;
-    setFoeHealth(health_loss);
-    if (localStorage.getItem('foe_health') <= 0) {
+    newHealth = toInt(sessionStorage.getItem('foe_health')) - health_loss;
+    setFoeHealth(newHealth);
+    if (sessionStorage.getItem('foe_health') <= 0) {
         window.alert("You won the battle!");
         window.storage.callback();
     }
@@ -127,13 +129,17 @@ function catchPokemon() {
         if (Math.random() < 0.95) {
             window.alert("Nice! You just caught " + window.location.origin + " !");
             // take the new pokemon
-            localStorage.setItem('player', localStorage.getItem("foe"));
-            localStorage.setItem('player_health', 100);
-            localStorage.setItem('player_rank', getSiteLevel(localStorage.getItem("foe")));
+            sessionStorage.setItem('player', sessionStorage.getItem("foe"));
+            sessionStorage.setItem('player_health', 100);
+            sessionStorage.setItem('player_rank', getSiteLevel(sessionStorage.getItem("foe")));
             window.storage.callback();
             return true;
         }
     }
     window.alert("It didn't work! The pokemon escaped!");
     return false;
+}
+
+function win() {
+    // $("#enemy").animate(properties, duration, easing, complete, properties, options)
 }
