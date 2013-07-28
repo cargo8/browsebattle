@@ -5,6 +5,13 @@
     z-index: 1000;
 }
 
+#player {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 5000;
+}
+
 #battle {
     position: absolute;
     top: 0px;

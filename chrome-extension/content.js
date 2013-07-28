@@ -17,7 +17,9 @@ function load_html() {
         $("#you").attr("src", chrome.extension.getURL("battle/images/github.png"));
         $("#battle").css("z-index", 9999);
         //TODO: Yunxing add the callback
-        startBattle(window.location.origin, null);
+        startBattle(window.location.origin, function(){
+            $("#battle").hide();
+        });
     });
 }
 
