@@ -178,7 +178,9 @@ function damage(defender, attacker, criticalCallback) {
         return dmg;
     } else if (diff > 0) {
         // @defender is more powerful than foe
-        if (diff < 20) {
+        if (diff < 5) {
+            diff *= 30;
+        } else if (diff < 20) {
             diff *= 3;
         } else if (diff < 50) {
             diff *= 2;
@@ -196,7 +198,9 @@ function damage(defender, attacker, criticalCallback) {
     } else {
         // @attacker is more powerful than @defender
         diff = -diff;
-        if (diff < 15) {
+        if (diff < 5) {
+            diff *= 70;
+        } else if (diff < 15) {
             diff *= 10;
         } else if (diff < 50) {
             diff *= 3;
