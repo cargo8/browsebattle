@@ -123,6 +123,7 @@ function startBattle(website, callback) {
         console.log("#catch.click");
         catchPokemon(function(success) {
             if (success) {
+                $("#enemy").attr("src", chrome.extension.getURL("battle/pokeball.png"));
                 msg.add_msg("Nice! You just caught " + window.location.origin + " !",
                            function(){
                                closeCallback();
@@ -235,12 +236,10 @@ function damage(defender, attacker, criticalCallback) {
         dmg = 450/diff;
         if (Math.random() < 0.30) {
             dmg *= 1.5;
-            msg.add_msg("Attack inflicted critical damage!", null, true);
-            msg.consume();
+            msg.add_msg("Attack inflicted critical damage!", null, false);
         } else if (Math.random() < 0.30) {
             dmg *= 2.0;
-            msg.add_msg("The attack was super effective!", null, true);
-            msg.consume();
+            msg.add_msg("The attack was super effective!", null, false);
         }
         if (dmg >= 100) {
             dmg = 95;
@@ -262,16 +261,13 @@ function damage(defender, attacker, criticalCallback) {
         dmg = diff / 4;
        if (Math.random() < 0.30) {
             dmg *= 1.5;
-            msg.add_msg("Attack inflicted critical damage!", null, true);
-            msg.consume();
+            msg.add_msg("Attack inflicted critical damage!", null, false);
         } else if (Math.random() < 0.30) {
             dmg *= 2.0;
-            msg.add_msg("The attack was super effective!", null, true);
-            msg.consume();
+            msg.add_msg("The attack was super effective!", null, false);
         } else if (Math.random() < 0.30) {
             dmg /= 2.0;
-            msg.add_msg("The attack was not very effective.", null, true);
-            msg.consume();
+            msg.add_msg("The attack was not very effective.", null, false);
         }
         if (dmg >= 100) {
             dmg = 95;
