@@ -4,10 +4,15 @@ function MSG(){
     this.create = function(_box) {
         box = _box
     }
-    this.add_msg = function(str, callback) {
-        queue.push({str:str, callback:callback});
+    this.add_msg = function(str, callback, auto) {
+        queue.push({str:str, callback:callback, auto:auto});
         if (queue.length == 1) {
             this.add_str(str);
+            if (!auto) {
+                setTimeout(function(){
+                    box.text(str + "▼");
+                }, 1000);
+            }
         }
     }
     this.add_str = function(str) {
@@ -25,6 +30,11 @@ function MSG(){
         if (queue.length != 0) {
             console.log(queue[0].str);
             this.add_str(queue[0].str);
+            if (!queue[0].auto) {
+                setTimeout(function(){
+                    box.text(queue[0].str + "▼");
+                }, 1000);
+            }
         }
     }
 }

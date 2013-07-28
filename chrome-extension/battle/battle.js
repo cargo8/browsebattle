@@ -83,10 +83,10 @@ function startBattle(website, callback) {
             var name = urlClean(playerWebsite.player);
             $("#player_name").html(name);
             $("#player_name2").html(name);
-            msg.add_msg("A wild " + urlClean(website) + " appears!");
+            msg.add_msg("A wild " + urlClean(website) + " appears!", null, false);
             msg.add_msg("What is " + name + " going to do?", function(){
                 showButtons();
-            });
+            }, null, false);
             $("#you").attr("src", "http://"+name+"/favicon.ico");
             chrome.storage.local.set({'player_rank': rankToLevel(rank)}, null);
         });
@@ -111,6 +111,7 @@ function startBattle(website, callback) {
     });
 
     $("#run").click(function() {
+        hideButtons();
         console.log("#run.click");
         if (!escape()) {
             defend();
@@ -118,6 +119,7 @@ function startBattle(website, callback) {
     });
 
     $("#catchPokemon").click(function() {
+        hideButtons();
         console.log("#catch.click");
         catchPokemon(function(success) {
             if (success) {
@@ -151,6 +153,12 @@ function defend() {
                    newHealth = toInt(health_data.player_health) - health_loss;
                    setPlayerHealth(newHealth);
                    chrome.storage.local.get('player_health', function(new_health) {
+                       chrome.storage.local.get("player", function(playerWebsite) {
+                           var name = urlClean(playerWebsite.player);
+                           msg.add_msg("What is " + name + " going to do?", function(){
+                               showButtons();
+                           }, null, false);
+                       });
                        if (new_health.player_health <= 0) {
                             if (!gameOver) {
                                 gameOver = true;
@@ -166,7 +174,7 @@ function defend() {
 }
 
 function attack() {
-    msg.add_msg("");
+    msg.add_msg("", null, true);
     msg.consume();
     hideButtons();
     $("#you").addClass('bounceInUp');
@@ -219,7 +227,8 @@ function damage(defender, attacker, criticalCallback) {
         dmg = 450/diff;
         if (Math.random() < 0.10) {
             dmg *= 1.5;
-            window.alert("Attack inflicted critical damage!");
+            msg.add_msg("Attack inflicted critical damage!", null, false);
+            msg.consume();
         }
         if (dmg >= 100) {
             dmg = 95;
@@ -237,9 +246,10 @@ function damage(defender, attacker, criticalCallback) {
             diff *= 3;
         }
         dmg = diff / 4;
-        if (Math.random() < 0.10) {
+       if (Math.random() < 0.10) {
             dmg *= 1.5;
-            window.alert("Attack inflicted critical damage!");
+            msg.add_msg("Attack inflicted critical damage!", null, true);
+            msg.consume();
         }
         if (dmg >= 100) {
             dmg = 95;
@@ -253,12 +263,13 @@ function escape() {
     if (Math.random() < 0.95) {
         if (!gameOver) {
             gameOver = true;
-            window.alert("You escaped safely!");
-            closeCallback();
+            msg.add_msg("You escaped safely!", function(){
+                closeCallback();
+            }, false);
             return true;
         }
     } else {
-        window.alert("Can't escape!");
+        msg.add_msg("Can't escaped!", null, false);
         return false;
     }
 }
