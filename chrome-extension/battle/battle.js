@@ -126,9 +126,9 @@ function startBattle(website, callback) {
                 msg.add_msg("Nice! You just caught " + window.location.origin + " !",
                            function(){
                                closeCallback();
-                           }, false;);
+                           }, false);
             } else {
-                msg.add_msg("It didn't work! The pokemon escaped!", null, false;);
+                msg.add_msg("It didn't work! The pokemon escaped!", null, false);
                 defend();
             }
         });
