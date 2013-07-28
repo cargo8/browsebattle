@@ -233,9 +233,13 @@ function damage(defender, attacker, criticalCallback) {
             diff /= 1.25;
         }
         dmg = 450/diff;
-        if (Math.random() < 0.20) {
+        if (Math.random() < 0.30) {
             dmg *= 1.5;
-            msg.add_msg("Attack inflicted critical damage!", null, false);
+            msg.add_msg("Attack inflicted critical damage!", null, true);
+            msg.consume();
+        } else if (Math.random() < 0.30) {
+            dmg *= 2.0;
+            msg.add_msg("The attack was super effective!", null, true);
             msg.consume();
         }
         if (dmg >= 100) {
@@ -256,9 +260,13 @@ function damage(defender, attacker, criticalCallback) {
             diff *= 3;
         }
         dmg = diff / 4;
-       if (Math.random() < 0.20) {
+       if (Math.random() < 0.30) {
             dmg *= 1.5;
             msg.add_msg("Attack inflicted critical damage!", null, true);
+            msg.consume();
+        } else if (Math.random() < 0.30) {
+            dmg *= 2.0;
+            msg.add_msg("The attack was super effective!", null, true);
             msg.consume();
         }
         if (dmg >= 100) {
