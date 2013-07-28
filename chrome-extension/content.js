@@ -62,7 +62,7 @@ function create_particle(sx,sy,dx,dy)
 }
 
 //Lets animate the particle
-function draw(dx,dy)
+function draw(dx,dy, callback)
 {
     console.log("Drawing");
     ctx.clearRect(0,0,W,H);
@@ -96,6 +96,7 @@ function draw(dx,dy)
             ctx.arc(p.x, p.y, p.radius * 2, 0,  Math.PI*2, false);
             ctx.fill();
             clear_fire_ball();
+            callback();
         };
 
          //Update position
@@ -109,13 +110,13 @@ var W=600; var H=200;
 var draw_fire_ball_interval;
 var isFiring = false;
 // draw a fire ball from (sx,sy) to (dx,dy) in duration
-function draw_fire_ball(sx,sy,dx,dy) {
+function draw_fire_ball(sx,sy,dx,dy, callback) {
     if(!isFiring) {
         isFiring = true;
         console.log("Drawing A Fire Ball");
         ctx = $('#battle_canvas')[0].getContext('2d');
         particles = new create_particle(sx,sy,dx,dy);
-        draw_fire_ball_interval = setInterval( function() { draw(dx,dy); }, 33);
+        draw_fire_ball_interval = setInterval( function() { draw(dx,dy, callback); }, 33);
     }
 }
 

@@ -136,36 +136,36 @@ function startBattle(website, callback) {
 }
 
 function defend() {
-    draw_fire_ball(475,30,80,150);
     $("#enemy").addClass('bounceInUp');
     setTimeout(function(){
         $("#enemy").removeClass('bounceInUp');
     }, 1000);
-    var health_loss = 0;
-    chrome.storage.local.get('foe_rank', function(data) {
-        chrome.storage.local.get('player_rank', function(data2) {
-            foe_rank = data.foe_rank;
-            player_rank = data2.player_rank;
-            health_loss = damage(player_rank, foe_rank);
-            chrome.storage.local.get('player_health', function(health_data) {
-               newHealth = toInt(health_data.player_health) - health_loss;
-               setPlayerHealth(newHealth);
-               chrome.storage.local.get('player_health', function(new_health) {
-                   if (new_health.player_health <= 0) {
-                        if (!gameOver) {
-                            gameOver = true;
-                            window.alert("Oh no, you lost the battle!");
-                            closeCallback();
-                        }
-                   }
-               });
+    draw_fire_ball(475,30,80,150, function() {
+        var health_loss = 0;
+        chrome.storage.local.get('foe_rank', function(data) {
+            chrome.storage.local.get('player_rank', function(data2) {
+                foe_rank = data.foe_rank;
+                player_rank = data2.player_rank;
+                health_loss = damage(player_rank, foe_rank);
+                chrome.storage.local.get('player_health', function(health_data) {
+                   newHealth = toInt(health_data.player_health) - health_loss;
+                   setPlayerHealth(newHealth);
+                   chrome.storage.local.get('player_health', function(new_health) {
+                       if (new_health.player_health <= 0) {
+                            if (!gameOver) {
+                                gameOver = true;
+                                window.alert("Oh no, you lost the battle!");
+                                closeCallback();
+                            }
+                       }
+                   });
+                });
             });
         });
     });
 }
 
 function attack() {
-    draw_fire_ball(80,150,475,30);
     msg.add_msg("");
     msg.consume();
     hideButtons();
@@ -173,27 +173,26 @@ function attack() {
     setTimeout(function(){
         $("#you").removeClass('bounceInUp');
     }, 1000);
-    var health_loss = 0;
-    chrome.storage.local.get('foe_rank', function(data) {
-        chrome.storage.local.get('player_rank', function(data2) {
-            foe_rank = data.foe_rank;
-            player_rank = data2.player_rank;
-            health_loss = damage(foe_rank, player_rank);
-            chrome.storage.local.get('foe_health', function(health_data) {
-               newHealth = toInt(health_data.foe_health) - health_loss;
-
-               setFoeHealth(newHealth);
-               chrome.storage.local.get('foe_health', function(new_health) {
-                if (new_health.foe_health <= 0) {
-                    window.setTimeout(function() {
-                        if (!gameOver) {
-                            gameOver = true;
-                            window.alert("You won the battle!");
-                            closeCallback();
+    draw_fire_ball(80,150,475,30, function() {
+        var health_loss = 0;
+        chrome.storage.local.get('foe_rank', function(data) {
+            chrome.storage.local.get('player_rank', function(data2) {
+                foe_rank = data.foe_rank;
+                player_rank = data2.player_rank;
+                health_loss = damage(foe_rank, player_rank);
+                chrome.storage.local.get('foe_health', function(health_data) {
+                   newHealth = toInt(health_data.foe_health) - health_loss;
+                   setFoeHealth(newHealth);
+                   chrome.storage.local.get('foe_health', function(new_health) {
+                        if (new_health.foe_health <= 0) {
+                            if (!gameOver) {
+                                gameOver = true;
+                                window.alert("You won the battle!");
+                                closeCallback();
+                            }
                         }
-                    }, 1000);
-               }
-               });
+                   });
+                });
             });
         });
     });
