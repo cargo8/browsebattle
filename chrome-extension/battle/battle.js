@@ -123,9 +123,12 @@ function startBattle(website, callback) {
         console.log("#catch.click");
         catchPokemon(function(success) {
             if (success) {
-                window.alert("Nice! You just caught " + window.location.origin + " !");
+                msg.add_msg("Nice! You just caught " + window.location.origin + " !",
+                           function(){
+                               closeCallback();
+                           }, false;);
             } else {
-                window.alert("It didn't work! The pokemon escaped!");
+                msg.add_msg("It didn't work! The pokemon escaped!", null, false;);
                 defend();
             }
         });
@@ -137,7 +140,7 @@ function startBattle(website, callback) {
     });
 }
 
-function defend() {
+function defend(defeated) {
     $("#enemy").addClass('bounceInUp');
     setTimeout(function(){
         $("#enemy").removeClass('bounceInUp');
@@ -162,8 +165,10 @@ function defend() {
                        if (new_health.player_health <= 0) {
                             if (!gameOver) {
                                 gameOver = true;
-                                window.alert("Oh no, you lost the battle!");
-                                closeCallback();
+                                msg.add_msg("Oh no, you lost the battle!", function(){
+                                    closeCallback();
+                                }, null, false);
+
                             }
                        }
                    });
@@ -195,8 +200,9 @@ function attack() {
                         if (new_health.foe_health <= 0) {
                             if (!gameOver) {
                                 gameOver = true;
-                                window.alert("You won the battle!");
-                                closeCallback();
+                                msg.add_msg("You won the battle!", function(){
+                                    closeCallback();
+                                }, false);
                             }
                         }
                    });
@@ -269,7 +275,7 @@ function escape() {
             return true;
         }
     } else {
-        msg.add_msg("Can't escaped!", null, false);
+        msg.add_msg("Can't escape!", null, false);
         return false;
     }
 }
@@ -282,7 +288,6 @@ function catchPokemon(callback) {
             (health < 95 && Math.random() < 0.15)) {
                 // take the new pokemon
                 console.log("pokemon was caught!");
-                callback(true);
                 chrome.storage.local.get('foe', function(foe) {
                     chrome.storage.local.set({'player': foe.foe}, null);
                     chrome.storage.local.set({'player_health': 100}, null);
@@ -290,7 +295,7 @@ function catchPokemon(callback) {
                         chrome.storage.local.set({'player_rank': rankToLevel(rank)}, null);
                     });
                 });
-                closeCallback();
+                callback(true);
                 return;
             }
         callback(false);

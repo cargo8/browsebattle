@@ -191,30 +191,30 @@ function enable_scrolling() {
 }
 
 $(document).ready(function() {
-    player = new PLAYER();
-    player.create();
-    keydown = function(data) {
-        var keycode = data.keyCode;
-        if (keycode == 37 || keycode == 65) {
-            data.preventDefault();
-            player.move_left();
-        }
-        if (keycode == 38 || keycode == 87) {
-            data.preventDefault();
-            player.move_up();
-        }
-        if (keycode == 39 || keycode == 68) {
-            data.preventDefault();
-            player.move_right();
-        }
-        if (keycode == 40 || keycode == 83) {
-            data.preventDefault();
-            player.move_down();
-        }
-        if (keycode == 16)
-            player.fire_event();
-    }
-    document.addEventListener("keydown", keydown);
+    // player = new PLAYER();
+    // player.create();
+    // keydown = function(data) {
+    //     var keycode = data.keyCode;
+    //     if (keycode == 37 || keycode == 65) {
+    //         data.preventDefault();
+    //         player.move_left();
+    //     }
+    //     if (keycode == 38 || keycode == 87) {
+    //         data.preventDefault();
+    //         player.move_up();
+    //     }
+    //     if (keycode == 39 || keycode == 68) {
+    //         data.preventDefault();
+    //         player.move_right();
+    //     }
+    //     if (keycode == 40 || keycode == 83) {
+    //         data.preventDefault();
+    //         player.move_down();
+    //     }
+    //     if (keycode == 16)
+    //         player.fire_event();
+    // }
+    // document.addEventListener("keydown", keydown);
 
     chrome.storage.local.get('player', function(data) {
         if (data.player) {
