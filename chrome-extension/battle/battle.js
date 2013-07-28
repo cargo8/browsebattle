@@ -15,6 +15,9 @@ function setFoeHealth(health) {
     chrome.storage.local.set({'foe_health': health}, null);
     var normalized = health / 100 * 170;
     document.getElementById("enemy_health").style["width"] = normalized+"px";
+    if (health < 40) {
+        $("#enemy_health").css("background-color", "#FF0000");
+    };
 }
 
 function setPlayerHealth(health) {
@@ -23,6 +26,9 @@ function setPlayerHealth(health) {
     chrome.storage.local.set({'player_health': health}, null);
     var normalized = health / 100 * 170;
     document.getElementById("player_health").style["width"] = normalized+"px";
+    if (health < 40) {
+        $("#player_health").css("background-color", "#FF0000");
+    }
 }
 
 function toInt(num) {
