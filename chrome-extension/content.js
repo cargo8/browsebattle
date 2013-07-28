@@ -21,6 +21,7 @@ function load_html() {
         //$("#battle").css("z-index", 9999);
         //TODO: Yunxing add the callback
         startBattle(window.location.origin, function(){
+            enable_scrolling();
             document.getElementById("battle-sound").pause();
             $("#battle").hide();
         });
