@@ -170,6 +170,7 @@ function damage(player, foe) {
         var dmg = -2.5 / diff;
         if (Math.random() < 0.10) {
             dmg *= 2;
+            window.alert("Attack inflicted critical damage!");
         }
         if (dmg >= 100) {
             dmg = 95;
@@ -180,6 +181,7 @@ function damage(player, foe) {
         var dmg = diff / 0.25;
         if (Math.random() < 0.10) {
             dmg *= 2;
+            window.alert("Attack inflicted critical damage!");
         }
         if (dmg >= 100) {
             dmg = 95;
