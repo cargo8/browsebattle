@@ -246,6 +246,8 @@ function damage(defender, attacker, criticalCallback) {
         diff = -diff;
         if (diff < 5) {
             diff *= 70;
+        } else if (diff < 10) {
+            diff *= 15;
         } else if (diff < 15) {
             diff *= 10;
         } else if (diff < 50) {
