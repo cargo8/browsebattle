@@ -4,6 +4,18 @@ function getFoeHealth() {
     return parseInt(localStorage.getItem("foe_health"), 10);
 }
 
+function setFoeHealth(health) {
+    localStorage.setItem("foe_health", health);
+    normalized = health / 100 * 170;
+    document.getElementById("enemy_health").setAttribute("width", normalized+"px");
+}
+
+function setPlayerHealth(health) {
+    localStorage.setItem("player_health", health);
+    normalized = health / 100 * 170;
+    document.getElementById("player_health").setAttribute("width", normalized+"px");
+}
+
 function toInt(num) {
     return parseInt(num, 10);
 }
@@ -42,9 +54,9 @@ function startGame(playerWebsite) {
 
 function startBattle(website, callback) {
     localStorage.setItem('foe', website);
-    localStorage.setItem('foe_health', 100);
     localStorage.setItem('foe_rank', getSiteLevel(website));
-    localStorage.setItem('player_health', 100);
+    setFoeHealth(100);
+    setPlayerHealth(100);
     Window.storage.callback = callback;
 }
 
@@ -64,11 +76,12 @@ function defend(website) {
 function attack() {
     var health_loss = 0;
     if (localStorage.getItem('foe_rank') < localStorage.getItem('player_rank') ) {
-        health_loss = 15; // FIXME - make this more proportional
+        health_loss = 15; // FIXME - make this more proportional and edit the HTML to reflect changes
     } else {
         health_loss = 45; // FIXME - make this more proportional
     }
-    localStorage.getItem('foe_health') -= health_loss;
+    newHealth = localStorage.getItem('foe_health') - health_loss;
+    setFoeHealth(health_loss);
     if (localStorage.getItem('foe_health') <= 0) {
         win();
     }
