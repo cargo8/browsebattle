@@ -127,8 +127,10 @@ function attack() {
                setFoeHealth(newHealth);
                chrome.storage.local.get('foe_health', function(new_health) {
                 if (new_health.foe_health <= 0) {
-                    window.alert("You won the battle!");
-                    closeCallback();
+                    window.setTimeout(function() {
+                        window.alert("You won the battle!");
+                        closeCallback();
+                    }, 1000);
                }
                });
             });
