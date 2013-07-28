@@ -40,7 +40,13 @@ function startBattle(website, callback) {
         get_rank(playerWebsite.player, function(rank) {
             console.log("Player rank = " + rank);
             $("#player_rank").html(rank);
-            $("#player_name").html(playerWebsite.player);
+            var name = playerWebsite.player;
+            name = name.replace("http://", "");
+            name = name.replace("https://", "");
+            name = name.replace("www.", "");
+            $("#player_name").html(name);
+            $("#player_name2").html(name);
+            $("#you").attr("src", playerWebsite.player+"/favicon.ico");
             chrome.storage.local.set({'player_rank': rank}, null);
         });
     });
@@ -50,6 +56,7 @@ function startBattle(website, callback) {
         console.log("Foe rank = " + rank);
         $("#enemy_rank").html(rank);
         $("#enemy_name").html(window.location.host);
+        $("#enemy").attr("src", website+"/favicon.ico");
         chrome.storage.local.set({'foe_rank':rank}, null);
     });
     setPlayerHealth(100);
