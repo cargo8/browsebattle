@@ -1,0 +1,138 @@
+.clear {
+  clear: both;
+}
+
+/* sample */
+body {
+  background-color: #38d;
+}
+
+/* reset */
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-decoration: none;
+}
+
+h2 {
+  font-size: 14px;
+}
+
+.battle {
+  font: 14px/1 monospace;
+  background-color: #fff;
+  width: 600px;
+  padding: 30px 30px 10px;
+  margin: 200px auto;
+}
+
+.enemy {
+  margin-bottom: 30px;
+}
+
+.you {
+  margin-bottom: 20px;
+}
+
+.enemy .image, .you .info-box {
+  float: right;
+}
+
+.enemy .info-box, .you .image {
+  float: left;
+}
+
+.info-box {
+  border-radius: 10px 3px 10px 3px;
+  border: 3px solid #ccc;
+  width: 280px;
+  padding: 10px;
+}
+
+.info-box h2 {
+  float: left;
+  font-weight: normal;
+  text-transform: uppercase;
+}
+
+.level {
+  float: right;
+  font-size: 14px;
+}
+
+/* health */
+.hp {
+  float: right;
+  display: inline-block;
+  border: 2px solid #ccc;
+  margin-top: 10px;
+  width: 200px;
+  line-height: 10px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.inner-bar, h6 {
+  float: left;
+} 
+
+h6 {
+  font-size: 12px;
+  font-weight: bold;
+  width: 30px;
+  text-align: center;
+}
+
+.inner-bar {
+  background-color: #ccc;
+  border-radius: inherit;
+  width: 127px;
+  height: 10px;
+}
+
+h4 {
+  padding-top: 20px;
+  margin-bottom: 20px;
+}
+
+/* profiles */
+.profile {
+  color: #777;
+  margin-bottom: 30px;
+}
+
+.profile img {
+  margin-bottom: 10px;
+}
+
+.act {
+  line-height: 14px;
+  padding: 20px 0;
+}
+
+.act h2 {
+  font-size: 20px;
+  line-height: 14px;
+  float: left;
+}
+
+/* attack btns */
+.actions {
+  float: right;
+}
+
+.actions li {
+  list-style: none;
+  display: inline;
+}
+
+.actions li a {
+  background-color: #777;
+  border-radius: 3px;
+  color: #fff;
+  display: inline-block;
+  margin: 0 5px;
+  padding: 10px;
+  text-decoration: none;
+}

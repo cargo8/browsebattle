@@ -7,15 +7,21 @@
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
-            "css": ["content.css"],
-            "js": ["jquery.js", "content.js"]
+            "css": ["content.css", "battle/style.css"],
+            "js": ["battle/script.js", "jquery.js", "content.js"]
         }
     ],
     "permissions": [
         "https://secure.flickr.com/"
     ],
     "browser_action": {
-        "default_icon": "icon.png",
-        "default_popup": "popup.html"
-    }
+        "default_icon": "icon.png"
+    },
+    "web_accessible_resources": [
+        "battle/images/facebook.png",
+        "battle/images/github.png",
+        "battle/index.html",
+        "battle/script.js",
+        "battle/style.css"
+    ]
 }

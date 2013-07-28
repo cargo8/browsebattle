@@ -2,6 +2,23 @@ function shuffle(o){ //v1.0
     for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
     return o;
 };
+
+function load_html() {
+    var battle = document.createElement('div');
+    battle.id = "battle";
+    $("body").prepend(battle);
+    var battleHTML = chrome.extension.getURL("battle/index.html");
+    console.log("LOADING ... ");
+    $("#battle").load(battleHTML, function(){
+        $("#battle").height($(window).height());
+        $("#battle").width($(window).width());
+        $("#can").width(0);
+        $("#enemy").attr("src", chrome.extension.getURL("battle/images/facebook.png"));
+        $("#you").attr("src", chrome.extension.getURL("battle/images/github.png"));
+        $("#battle").css("z-index", 9999);
+    });
+}
+
 function flash(context, width, height, cb) {
     var freq = 200;
     // fill all with red
@@ -36,7 +53,6 @@ function fill_one_by_one(context, width, height) {
     var j = 0;
     console.log("befroe");
     function myloop(){
-        console.log("" + i + "," + j);
         context.fillStyle = "rgba(0,0,0,1)";
         context.fillRect(array_width[i] * len, array_height[j] * len, len, len);
         j ++;
@@ -45,13 +61,13 @@ function fill_one_by_one(context, width, height) {
             i ++;
         }
         if (i == num_width) {
-//            render_page();
+            load_html();
             console.log("finished");
             return;
         }
         setTimeout(function(){
             myloop();
-        }, 10);
+        }, 3);
     }
     myloop();
 }
