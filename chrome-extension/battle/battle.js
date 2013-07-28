@@ -107,4 +107,3 @@ function catchPokemon() {
 function lose() {}
 
 function win() {}
-

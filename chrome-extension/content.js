@@ -103,6 +103,5 @@ $(document).ready(function() {
     // img.src = 'http://www.planet-aye.co.uk/seasonal05/snow.png';
 
     disable_scrolling();
-    fill_color(context, width, height);  
+    fill_color(context, width, height);
 })
-
