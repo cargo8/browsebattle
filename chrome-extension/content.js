@@ -39,7 +39,7 @@ function create_particle(sx,sy,dx,dy)
     //Random position on the canvas
     this.x = sx;
     this.y = sy;
-    
+
     //Lets add random velocity to each particle
     var base_speed = 5;
     var ratio = Math.abs(dx-sx) / Math.abs(dy-sy);
@@ -47,13 +47,13 @@ function create_particle(sx,sy,dx,dy)
     this.vy = base_speed;
     if (dx < sx) { this.vx = 0 - base_speed * ratio};
     if (dy < sy) { this.vy = 0 - base_speed };
-    
+
     //Random colors
     var r = Math.random()*255>>0;
     var g = Math.random()*255>>0;
     var b = Math.random()*255>>0;
     this.color = "rgba("+r+", "+g+", "+b+", 0.5)";
-    
+
     //Random size
     this.radius = 20;//Math.random()*20+20;
 }
@@ -67,26 +67,26 @@ function draw(dx,dy)
     //Lets reduce the opacity of the BG paint to give the final touch
     ctx.fillStyle = "rgba(0, 0, 0, 0)";
     ctx.fillRect(0, 0, W, H);
-    
+
     //Lets blend the particle with the BG
     ctx.globalCompositeOperation = "lighter";
-    
+
     //Lets draw particles from the array now
     //for(var t = 0; t < particles.length; t++)
     //{
         var p = particles;
         ctx.beginPath();
-        
+
         //Time for some colors
         var gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius);
         gradient.addColorStop(0, "white");
         gradient.addColorStop(0.4, "white");
         gradient.addColorStop(0.4, p.color);
         gradient.addColorStop(1, "black");
-        
+
         ctx.fillStyle = gradient;
         ctx.arc(p.x, p.y, p.radius, 0,  Math.PI*2, false);
-        ctx.fill();  
+        ctx.fill();
 
         if (Math.abs(p.x - dx) < 10 && Math.abs(p.y - dy) < 10) {
             ctx.fillStyle = "rgba(221, 100, 53, 1)";
@@ -146,7 +146,6 @@ function fill_one_by_one(context, width, height) {
     }
     var i = 0;
     var j = 0;
-    console.log("befroe");
     function myloop(){
         context.fillStyle = "rgba(0,0,0,1)";
         context.fillRect(array_width[i] * len, array_height[j] * len, len, len);
@@ -185,6 +184,31 @@ function enable_scrolling() {
 }
 
 $(document).ready(function() {
+    player = new PLAYER();
+    player.create();
+    keydown = function(data) {
+        var keycode = data.keyCode;
+        if (keycode == 37 || keycode == 65) {
+            data.preventDefault();
+            player.move_left();
+        }
+        if (keycode == 38 || keycode == 87) {
+            data.preventDefault();
+            player.move_up();
+        }
+        if (keycode == 39 || keycode == 68) {
+            data.preventDefault();
+            player.move_right();
+        }
+        if (keycode == 40 || keycode == 83) {
+            data.preventDefault();
+            player.move_down();
+        }
+        if (keycode == 16)
+            player.fire_event();
+    }
+    document.addEventListener("keydown", keydown);
+
     chrome.storage.local.get('player', function(data) {
         if (data.player) {
             var width = window.innerWidth + 50;
