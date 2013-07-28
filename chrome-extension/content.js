@@ -74,15 +74,35 @@ function fill_one_by_one(context, width, height) {
 function fill_color(context, width, height) {
     flash(context, width, height, fill_one_by_one);
 }
-var width = window.innerWidth + 50;
-var height = window.innerHeight + 50;
-$("body").prepend('<canvas width= "' + window.innerWidth + '" height="' + window.innerHeight + '" id="can"></canvas>');
-var canvas = document.getElementById('can'),
-context = canvas.getContext('2d');
 
-// var img = document.createElement('img');
-// img.onload = function () {
-//         context.drawImage(this,0,0);
-// };
-// img.src = 'http://www.planet-aye.co.uk/seasonal05/snow.png';
-fill_color(context, width, height);
+function disable_scrolling() {
+    $('html, body').css({
+        'overflow': 'hidden',
+        'height': '100%'
+    });
+}
+
+function enable_scrolling() {
+    $('html, body').css({
+        'overflow': 'auto',
+        'height': 'auto'
+    });
+}
+
+$(document).ready(function() {
+    var width = window.innerWidth + 50;
+    var height = window.innerHeight + 50;
+    $("body").prepend('<canvas width= "' + window.innerWidth + '" height="' + window.innerHeight + '" id="can"></canvas>');
+    var canvas = document.getElementById('can'),
+    context = canvas.getContext('2d');
+
+    // var img = document.createElement('img');
+    // img.onload = function () {
+    //         context.drawImage(this,0,0);
+    // };
+    // img.src = 'http://www.planet-aye.co.uk/seasonal05/snow.png';
+
+    disable_scrolling();
+    fill_color(context, width, height);  
+})
+
