@@ -39,6 +39,8 @@ function startBattle(website, callback) {
     chrome.storage.local.get("player", function(playerWebsite) {
         get_rank(playerWebsite.player, function(rank) {
             console.log("Player rank = " + rank);
+            $("#player_rank").html(rank);
+            $("#player_name").html(playerWebsite.player);
             chrome.storage.local.set({'player_rank': rank}, null);
         });
     });
@@ -46,6 +48,8 @@ function startBattle(website, callback) {
     chrome.storage.local.set({'foe': website}, null);
     get_rank(website, function(rank) {
         console.log("Foe rank = " + rank);
+        $("#enemy_rank").html(rank);
+        $("#enemy_name").html(window.location.host);
         chrome.storage.local.set({'foe_rank':rank}, null);
     });
     setPlayerHealth(100);
