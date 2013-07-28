@@ -3,7 +3,6 @@
 <head>
   <title>Battle!</title>
   <!-- <link rel="stylesheet" href="style.css"> -->
-  <!-- <script src="script.js"></script> -->
 </head>
 <body>
   <div class="battle">
@@ -12,9 +11,9 @@
         <h2>Facebook</h2>
         <div class="level">Lv100</div>
         <div class="clear"></div>
-        <div class="hp">
+        <div class="health_bar">
           <h6>HP</h6>
-          <div class="inner-bar">
+          <div id="enemy_health" class="inner-bar">
           </div>
           <div class="clear"></div>
         </div>
@@ -30,9 +29,9 @@
         <h2>GitHub</h2>
         <div class="level">Lv1</div>
         <div class="clear"></div>
-        <div class="hp">
+        <div class="health_bar">
           <h6>HP</h6>
-          <div class="inner-bar">
+          <div id="player_health" class="inner-bar">
           </div>
           <div class="clear"></div>
         </div>
@@ -46,9 +45,9 @@
     <div class="act">
       <h2>What will GitHub do?</h2>
       <ul class="actions">
-        <li><a href="#">Attack</a></li>
-        <li><a href="#">Run</a></li>
-        <li><a href="#">Catch</a></li>
+        <li><a href="#" id="attack">Attack</a></li>
+        <li><a href="#" id="run">Run</a></li>
+        <li><a href="#" id="catchPokemon">Catch</a></li>
       </ul>
       <div class="clear"></div>
     </div>
