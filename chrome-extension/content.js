@@ -15,18 +15,21 @@ function load_html() {
     $("#battle").load(battleHTML, function(){
         $("#battle").height($(window).height());
         $("#battle").width($(window).width());
-        //$("#can").width(0);
+        $("#can").width(0);
         $("#enemy").attr("src", chrome.extension.getURL("battle/images/facebook.png"));
         $("#you").attr("src", chrome.extension.getURL("battle/images/github.png"));
         //$("#battle").css("z-index", 9999);
         //TODO: Yunxing add the callback
         startBattle(window.location.origin, function(){
+            enable_scrolling();
+            document.getElementById("battle-sound").pause();
             $("#battle").hide();
         });
     });
 }
 
 function clear_fire_ball () {
+    isFiring = false;
     clearInterval(draw_fire_ball_interval);
     setTimeout(function(){
         ctx.clearRect(0,0,W,H);
@@ -104,13 +107,16 @@ function draw(dx,dy)
 var particles;
 var W=600; var H=200;
 var draw_fire_ball_interval;
-
+var isFiring = false;
 // draw a fire ball from (sx,sy) to (dx,dy) in duration
 function draw_fire_ball(sx,sy,dx,dy) {
-    console.log("Drawing A Fire Ball");
-    ctx = $('#battle_canvas')[0].getContext('2d');
-    particles = new create_particle(sx,sy,dx,dy);
-    draw_fire_ball_interval = setInterval( function() { draw(dx,dy); }, 33);
+    if(!isFiring) {
+        isFiring = true;
+        console.log("Drawing A Fire Ball");
+        ctx = $('#battle_canvas')[0].getContext('2d');
+        particles = new create_particle(sx,sy,dx,dy);
+        draw_fire_ball_interval = setInterval( function() { draw(dx,dy); }, 33);
+    }
 }
 
 
@@ -213,6 +219,9 @@ $(document).ready(function() {
         if (data.player) {
             var width = window.innerWidth + 50;
             var height = window.innerHeight + 50;
+            var audio_string = '<audio id="battle-sound" src="' + chrome.extension.getURL("battle/107-battle-vs-wild-pokemon-.mp3" + '" preload="auto"></audio>');
+            $("body").append(audio_string);
+            document.getElementById("battle-sound").play();
             $("body").prepend('<canvas width= "' + window.innerWidth + '" height="' + window.innerHeight + '" id="can"></canvas>');
             var canvas = document.getElementById('can'),
             context = canvas.getContext('2d');

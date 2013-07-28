@@ -2,14 +2,9 @@
   clear: both;
 }
 
-/* sample */
-body {
-  background-color: #38d;
-}
-
 #battle_canvas {
   position: fixed;
-  border: 1px solid;
+  /*border: 1px solid;*/
   border-color: green;
   height: 200px;
   width: 600px;
@@ -93,7 +88,7 @@ h6 {
 }
 
 .inner-bar {
-  background-color: #ccc;
+  background-color: #66FF66;
   border-radius: inherit;
   width: 170px;
   height: 10px;

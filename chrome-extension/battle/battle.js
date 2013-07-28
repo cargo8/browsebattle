@@ -1,4 +1,5 @@
-window.storage = {};
+var closeCallback;
+var gameOver = false;
 
 function getFoeHealth(callback) {
     var health = 100;
@@ -14,6 +15,9 @@ function setFoeHealth(health) {
     chrome.storage.local.set({'foe_health': health}, null);
     var normalized = health / 100 * 170;
     document.getElementById("enemy_health").style["width"] = normalized+"px";
+    if (health < 40) {
+        $("#enemy_health").css("background-color", "#FF0000");
+    };
 }
 
 function setPlayerHealth(health) {
@@ -22,6 +26,9 @@ function setPlayerHealth(health) {
     chrome.storage.local.set({'player_health': health}, null);
     var normalized = health / 100 * 170;
     document.getElementById("player_health").style["width"] = normalized+"px";
+    if (health < 40) {
+        $("#player_health").css("background-color", "#FF0000");
+    }
 }
 
 function toInt(num) {
@@ -33,24 +40,49 @@ function startGame(playerWebsite) {
     chrome.storage.local.set({'player': playerWebsite}, null);
 }
 
+function urlClean(url) {
+    url = url.replace("http://", "");
+    url = url.replace("https://", "");
+    url = url.replace("www.", "");
+    url = url.replace("/", "");
+    return url;
+}
+
+function rankToLevel(rank) {
+    if (rank > 100) {
+        rank = 1;
+    } else {
+        rank = 100 - rank;
+    }
+    return rank;
+}
+
 function startBattle(website, callback) {
     console.log("battle started");
 
     chrome.storage.local.get("player", function(playerWebsite) {
         get_rank(playerWebsite.player, function(rank) {
-            console.log("Player rank = " + rank);
-            chrome.storage.local.set({'player_rank': rank}, null);
+            console.log("Player rank = " + rankToLevel(rank));
+            $("#player_rank").html(rankToLevel(rank));
+            var name = urlClean(playerWebsite.player);
+            $("#player_name").html(name);
+            $("#player_name2").html(name);
+            $("#you").attr("src", "http://"+name+"/favicon.ico");
+            chrome.storage.local.set({'player_rank': rankToLevel(rank)}, null);
         });
     });
 
     chrome.storage.local.set({'foe': website}, null);
     get_rank(website, function(rank) {
-        console.log("Foe rank = " + rank);
-        chrome.storage.local.set({'foe_rank':rank}, null);
+        $("#enemy_rank").html(rankToLevel(rank));
+        $("#enemy_name").html(window.location.host);
+        var name = urlClean(website);
+        $("#enemy").attr("src", "http://"+name+"/favicon.ico");
+        chrome.storage.local.set({'foe_rank':rankToLevel(rank)}, null);
     });
     setPlayerHealth(100);
     setFoeHealth(100);
-    window.storage.callback = callback;
+    closeCallback = callback;
 
     $("#attack").click(function() {
         console.log("#attack.click");
@@ -60,7 +92,9 @@ function startBattle(website, callback) {
 
     $("#run").click(function() {
         console.log("#run.click");
-        escape();
+        if (!escape()) {
+            defend();
+        }
     });
 
     $("#catchPokemon").click(function() {
@@ -94,8 +128,11 @@ function defend() {
                setPlayerHealth(newHealth);
                chrome.storage.local.get('player_health', function(new_health) {
                    if (new_health.player_health <= 0) {
-                        window.alert("Oh no, you lost the battle!");
-                        window.storage.callback();
+                        if (!gameOver) {
+                            gameOver = true;
+                            window.alert("Oh no, you lost the battle!");
+                            closeCallback();
+                        }
                    }
                });
             });
@@ -116,8 +153,13 @@ function attack() {
                setFoeHealth(newHealth);
                chrome.storage.local.get('foe_health', function(new_health) {
                 if (new_health.foe_health <= 0) {
-                    window.alert("You won the battle!");
-                    window.storage.callback();
+                    window.setTimeout(function() {
+                        if (!gameOver) {
+                            gameOver = true;
+                            window.alert("You won the battle!");
+                            closeCallback();
+                        }
+                    }, 1000);
                }
                });
             });
@@ -125,33 +167,73 @@ function attack() {
     });
 }
 
-// amount of loss that @player should incur
-function damage(player, foe) {
-    var player_rank = toInt(player);
-    var foe_rank = toInt(foe);
-    var diff = player_rank - foe_rank;
-    if (diff < 0) {
-        // @player is much more powerful than foe
-        return -2.5 / diff;
+// amount of loss that @defender should incur
+function damage(defender, attacker, criticalCallback) {
+    var defender_rank = toInt(defender);
+    var attacker_rank = toInt(attacker);
+    var diff = defender_rank - attacker_rank;
+    var dmg = 20;
+    if (diff === 0) {
+        console.log("Same level pokemon");
+        return dmg;
+    } else if (diff > 0) {
+        // @defender is more powerful than foe
+        if (diff < 20) {
+            diff *= 3;
+        } else if (diff < 50) {
+            diff *= 2;
+        }
+        dmg = 450/diff;
+        if (Math.random() < 0.10) {
+            dmg *= 1.5;
+            window.alert("Attack inflicted critical damage!");
+        }
+        if (dmg >= 100) {
+            dmg = 95;
+        }
+        console.log(dmg);
+        return dmg;
     } else {
-        // @foe is more powerful than @player
-        return diff / 0.25;
+        // @attacker is more powerful than @defender
+        diff = -diff;
+        if (diff < 15) {
+            diff *= 10;
+        } else if (diff < 50) {
+            diff *= 3;
+        }
+        dmg = diff / 4;
+        if (Math.random() < 0.10) {
+            dmg *= 1.5;
+            window.alert("Attack inflicted critical damage!");
+        }
+        if (dmg >= 100) {
+            dmg = 95;
+        }
+        console.log(dmg);
+        return dmg;
     }
 }
 
 function escape() {
     if (Math.random() < 0.95) {
-        window.alert("You escaped safely!");
-        window.storage.callback();
+        if (!gameOver) {
+            gameOver = true;
+            window.alert("You escaped safely!");
+            closeCallback();
+            return true;
+        }
     } else {
         window.alert("Can't escape!");
+        return false;
     }
 }
 
 function catchPokemon(callback) {
     getFoeHealth(function(health) {
-        if (health < 50) {
-            if (Math.random() < 0.95) {
+        if ((health < 30 && Math.random() < 0.95) ||
+            (health < 50 && Math.random() < 0.60) ||
+            (health < 75 && Math.random() < 0.35) ||
+            (health < 95 && Math.random() < 0.15)) {
                 // take the new pokemon
                 console.log("pokemon was caught!");
                 callback(true);
@@ -159,19 +241,13 @@ function catchPokemon(callback) {
                     chrome.storage.local.set({'player': foe.foe}, null);
                     chrome.storage.local.set({'player_health': 100}, null);
                     get_rank(foe.foe, function(rank) {
-                        chrome.storage.local.set({'player_rank': rank}, null);
+                        chrome.storage.local.set({'player_rank': rankToLevel(rank)}, null);
                     });
                 });
-                window.storage.callback();
+                closeCallback();
                 return;
             }
-        }
-        console.log("pokemon got aways!");
         callback(false);
         return;
     });
 }
-
-function lose() {}
-
-function win() {}
