@@ -183,7 +183,7 @@ function damage(defender, attacker, criticalCallback) {
         } else if (diff < 50) {
             diff *= 2;
         }
-        dmg = 400/diff;
+        dmg = 450/diff;
         if (Math.random() < 0.10) {
             dmg *= 1.5;
             window.alert("Attack inflicted critical damage!");
@@ -191,16 +191,17 @@ function damage(defender, attacker, criticalCallback) {
         if (dmg >= 100) {
             dmg = 95;
         }
+        console.log(dmg);
         return dmg;
     } else {
         // @attacker is more powerful than @defender
         diff = -diff;
-        if (diff < 20) {
+        if (diff < 15) {
             diff *= 10;
         } else if (diff < 50) {
             diff *= 3;
         }
-        dmg = diff / 5;
+        dmg = diff / 4;
         if (Math.random() < 0.10) {
             dmg *= 1.5;
             window.alert("Attack inflicted critical damage!");
@@ -208,6 +209,7 @@ function damage(defender, attacker, criticalCallback) {
         if (dmg >= 100) {
             dmg = 95;
         }
+        console.log(dmg);
         return dmg;
     }
 }
